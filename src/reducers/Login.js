@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
     username: "",
@@ -9,19 +9,16 @@ export const Login = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        increment: (state) => {
-            state.value += 1
+        login: (state) => {
+            return state
         },
-        decrement: (state) => {
-            state.value -= 1
-        },
-        incrementByAmount: (state, action) => {
-            state.value += action.payload
+        logout: (state) => {
+            return state
         },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { LOGIN, LOGOUT } = Login.actions
+export const {login, logout} = Login.actions
 
 export default Login.reducer
