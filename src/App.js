@@ -1,34 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
-import Clock from "./component/Clock";
-import {useEffect, useState} from 'react';
-import {Counter} from './features/counter/Counter';
-import SideMenu from "./page/SideMenu";
-
+import React from 'react';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import routeConfig from "./routers/RoutesConfig";
+import AuthorizedRoute from "./routers/AuthorizedRoute";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-    const [gmt, setGmt] = useState("");
-
-    const container = {
-        display: 'flex'
-    };
     return (
-        // <div className="App">
-        //   <div style={container}>
-        //     <div>
-        //       <label>Múi giờ </label>
-        //       <input type="number" maxLength={2} value={gmt} onChange={e => setGmt(e.target.value)} />
-        //     </div>
-        //     <Clock gmt ={gmt}/>
-        //   </div>
-        // </div>
-        <div className="App">
-            <header className="App-header">
-                <SideMenu/>
-                <Counter/>
-                {/* <Login/> */}
-            </header>
-        </div>
+        <BrowserRouter>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            <Routes>
+                {routeConfig.map((route, index) => {
+                    const {path} = route;
+                    return (
+                        <Route key={index} path={path} element={
+                            route.auth ?
+                                <AuthorizedRoute component={<route.component/>}/> : <route.component/>
+                        }/>
+                    );
+                })}
+            </Routes>
+        </BrowserRouter>
     );
 }
 

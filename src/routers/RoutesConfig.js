@@ -1,6 +1,7 @@
 import Login from "../page/Login";
 import Page404 from "../page/Page404";
 import Home from "../page/Home";
+import User from "../page/User";
 
 const RoutesConfig = [
     {
@@ -21,6 +22,11 @@ const RoutesConfig = [
     {
         path: "/home",
         component: Home,
+        auth: true
+    },
+    {
+        path: "/user",
+        component: User,
         auth: true
     },
 

@@ -1,13 +1,18 @@
-export function login() {
+export function login(values) {
     return {
-        type: 'login',
+        type: 'LOGIN',
         payload: {
-            request:{
-                url:'/login',
-                onComplete: () => { console.log('complete') },
-                onSuccess: () => { console.log('success') },
-                onError: () => {console.log('error')},
+            request: {
+                url: '/login',
+                method: 'POST',
+                data: values
             }
         }
+    }
+}
+
+export function logout() {
+    return {
+        type: 'LOGOUT'
     }
 }

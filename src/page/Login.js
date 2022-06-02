@@ -1,8 +1,18 @@
 import React from 'react';
 import {Button, Grid, TextField} from "@mui/material";
 import {ErrorMessage, Form, Formik, Field} from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../action/Login";
+import {useNavigate} from "react-router-dom";
+import {toast} from 'react-toastify';
 
 function Login() {
+    const navigate = useNavigate();
+    const token = useSelector(state => {
+        return state.auth
+    })
+    console.log(token)
+    const dispatch = useDispatch()
     return (
         <div>
             <Formik
@@ -14,13 +24,25 @@ function Login() {
                     } else if (!values.password) {
                         errors.password = 'Required';
                     }
+                    console.log(errors)
                     return errors;
                 }}
+
                 onSubmit={(values, {setSubmitting}) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
+                    // var test = dispatch(login())
+                    dispatch(login(values)).then(resp => {
+                        toast.success("Đăng nhập thành công", {
+                            position: toast.POSITION.TOP_RIGHT
+                        });
+                        navigate("/");
+                    }).catch((err) => {
+                        console.log({err})
+                        toast.error(err.error.response.data.message, {
+                            position: toast.POSITION.TOP_RIGHT
+                        });
+                        setSubmitting(false)
+                    })
+
                 }}
             >
                 {({isSubmitting}) => (
@@ -30,25 +52,21 @@ function Login() {
                               justifyContent="center"
                               alignItems="center"
                               padding="10rem">
-                            {/*   <TextField id="username" name="username" margin="normal" label="Username"
-                                       variant="outlined"/>*/}
-                            {/*<Field id="username" name="username" component={TextField} placeholder="Tên đăng nhập"/>*/}
-                            <Field
-                                name="username"
-                                render={({field /* { name, value, onChange, onBlur } */}) => (
+                            <Field name="username">
+                                {({field, form, meta}) => (
                                     <TextField {...field} id="username" type="text" margin="normal"
                                                label="Tên đăng nhập" variant="outlined"/>
                                 )}
-                            />
-                            <ErrorMessage name="username" component="div"/>
-                            <Field
-                                name="password"
-                                render={({field /* { name, value, onChange, onBlur } */}) => (
+                            </Field>
+                            {/*<ErrorMessage name="username" component="div"/>*/}
+                            <Field name="password">
+                                {({field, form, meta}) => (
                                     <TextField {...field} id="password" name="password" margin="normal" type="password"
                                                label="Password" variant="outlined"/>
                                 )}
-                            />
-                            <ErrorMessage name="password" component="div"/>
+                            </Field>
+                            {/*<ErrorMessage name="password" component="div"/>*/}
+
                             <Button type="submit" variant="contained" disabled={isSubmitting}>
                                 Login
                             </Button>
