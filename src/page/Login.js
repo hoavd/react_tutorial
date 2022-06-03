@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {login} from "../action/Login";
 import {useNavigate} from "react-router-dom";
 import {toast} from 'react-toastify';
+import '../assets/css/boxicons/css/boxicons.css'
+import '../assets/css/fontawesomev5/css/all.css'
 
 function Login() {
     const navigate = useNavigate();

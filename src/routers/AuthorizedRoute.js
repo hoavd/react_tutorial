@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Navigate, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import MainLayout from "../page/MainLayout";
+import MainLayout from "../component/main/MainLayout";
 
 const AuthorizedRoute = ({component}) => {
     const location = useLocation();

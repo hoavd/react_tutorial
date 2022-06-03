@@ -23,28 +23,13 @@ function Navbar() {
     return (
         <div className={clsx(styles.nav)} id="navbar">
             <nav className={styles.nav__container}>
-                {/*<div>*/}
-                {/*    /!*HOME*!/*/}
-                {/*    <Link to={"/"} className={clsx(styles.nav__link, styles.nav__logo)}>*/}
-                {/*        <i className={clsx("bx bxs-disc", styles.nav__icon)}/>*/}
-                {/*        <span className={styles.nav__logo_name}>TNTech</span>*/}
-                {/*    </Link>*/}
-
-                {/*    <div className={styles.nav__list}>*/}
-                {/*        {menuItems && menuItems.length > 0 ? (*/}
-                {/*            <>*/}
-                {/*                {*/}
-                {/*                    menuItems.map((item, index) => (*/}
-                {/*                        <MenuItem key={item.menu.id} menu={item}/>*/}
-                {/*                    ))*/}
-                {/*                }*/}
-                {/*            </>*/}
-                {/*        ) : null*/}
-                {/*        }*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
                 <div>
+                    {/*HOME*/}
+                    <Link to={"/"} className={clsx(styles.nav__link, styles.nav__logo)}>
+                        <i className={clsx("bx bxs-disc", styles.nav__icon)}/>
+                        <span className={styles.nav__logo_name}>TNTech</span>
+                    </Link>
+
                     <div className={styles.nav__list}>
                         {menu && menu.length > 0 ? (
                             <>
@@ -58,6 +43,15 @@ function Navbar() {
                         }
                     </div>
                 </div>
+
+                <Link to={"/login"} className={clsx(styles.nav__link, styles.nav__logout)} onClick={logOut}>
+                    <i className={clsx("bx bx-log-out", styles.nav__icon)}/>
+                    <span className={styles.nav__name}>
+                                    Log Out
+                                </span>
+                </Link>
+
+
             </nav>
         </div>
     );
