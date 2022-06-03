@@ -3,7 +3,6 @@ import React from 'react';
 import logo from "../../../assets/images/logo_tntech.png"
 import styles from './Header.module.css'
 import clsx from 'clsx'
-import {Link} from "react-router-dom";
 
 function Header() {
     const showMenu = () => {

@@ -1,7 +1,7 @@
 import Login from "../page/Login";
 import Page404 from "../page/Page404";
-import Home from "../page/Home";
-import User from "../page/User";
+import Home from "../page/main/Home";
+import User from "../page/main/User";
 
 const RoutesConfig = [
     {
@@ -20,12 +20,17 @@ const RoutesConfig = [
         auth: true
     },
     {
+        path: "/dashboard",
+        component: Home,
+        auth: true
+    },
+    {
         path: "/home",
         component: Home,
         auth: true
     },
     {
-        path: "/user",
+        path: "/users",
         component: User,
         auth: true
     },
