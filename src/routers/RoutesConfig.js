@@ -2,6 +2,7 @@ import Login from "../page/Login";
 import Page404 from "../page/Page404";
 import Home from "../page/main/Home";
 import User from "../page/main/User";
+import Category from "../page/main/Category";
 
 const RoutesConfig = [
     {
@@ -22,6 +23,11 @@ const RoutesConfig = [
     {
         path: "/dashboard",
         component: Home,
+        auth: true
+    },
+    {
+        path: "/category",
+        component: Category,
         auth: true
     },
     {

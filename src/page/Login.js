@@ -10,10 +10,6 @@ import '../assets/css/fontawesomev5/css/all.css'
 
 function Login() {
     const navigate = useNavigate();
-    const token = useSelector(state => {
-        return state.auth
-    })
-    console.log(token)
     const dispatch = useDispatch()
     return (
         <div>
@@ -26,7 +22,6 @@ function Login() {
                     } else if (!values.password) {
                         errors.password = 'Required';
                     }
-                    console.log(errors)
                     return errors;
                 }}
 
@@ -38,7 +33,6 @@ function Login() {
                         });
                         navigate("/");
                     }).catch((err) => {
-                        console.log({err})
                         toast.error(err.error.response.data.message, {
                             position: toast.POSITION.TOP_RIGHT
                         });

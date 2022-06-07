@@ -1,13 +1,13 @@
 const getAccessToken = () => {
-    return localStorage.getItem("token")
+    return localStorage.getItem("accessToken")
 };
 
 const updateLocalAccessToken = (token) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem("accessToken", token);
 };
 
 const setToken = (token) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem("accessToken", token);
 };
 
 const TokenService = {

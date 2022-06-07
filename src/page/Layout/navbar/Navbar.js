@@ -3,21 +3,19 @@ import styles from './Navbar.module.css'
 import {Link} from "react-router-dom";
 import clsx from "clsx";
 import SideMenu from "./side_menu/SideMenu";
-
+import {useDispatch} from "react-redux";
+import {userInfo} from "../../../action/UserInfo";
 
 function Navbar() {
     const [navItems, setNavItems] = useState([]);
+    const dispatch = useDispatch()
 
-    // const auth = useContext(AuthContext);
     const logOut = () => {
-        // auth.logout();
+        dispatch(logOut)
     };
 
     useEffect(() => {
         setNavItems(navItemsTemp)
-        /*    return () => {
-                setNavItems(navItemsTemp)
-            };*/
     }, [])
 
 
@@ -269,9 +267,7 @@ function Navbar() {
 
                 <Link to={"/login"} className={clsx(styles.nav__link, styles.nav__logout)} onClick={logOut}>
                     <i className={clsx("bx bx-log-out", styles.nav__icon)}/>
-                    <span className={styles.nav__name}>
-                                    Log Out
-                                </span>
+                    <span className={styles.nav__name}> Log Out</span>
                 </Link>
             </nav>
         </div>

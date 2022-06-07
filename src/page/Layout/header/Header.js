@@ -1,10 +1,22 @@
 import React from 'react';
-
-import logo from "../../../assets/images/logo_tntech.png"
 import styles from './Header.module.css'
 import clsx from 'clsx'
+import {IconButton, Menu, MenuItem} from "@mui/material";
+import {AccountCircle} from "@mui/icons-material";
+import {useSelector} from "react-redux";
 
 function Header() {
+    const userInfo = useSelector((state) => state.userInfo)
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const showMenu = () => {
         const toggleBtn = document.getElementById('header-toggle')
         if (toggleBtn) {
@@ -19,7 +31,39 @@ function Header() {
     return (
         <header className={styles.header}>
             <div className={styles.header__container}>
-                <img src={logo} alt="" className={styles.header__img}/>
+                {/*<span className={styles.header__img}>cf</span>*/}
+                <div className={styles.header__img}>
+                    <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        color="inherit"
+                    >
+                        <AccountCircle/>
+                    </IconButton>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+
+                        <MenuItem onClick={handleClose}><span style={{fontWeight: "bold"}}>{userInfo?.username}</span></MenuItem>
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    </Menu>
+                </div>
+                {/*<img src={logo} alt="" className={styles.header__img}/>*/}
                 <div className={styles.header__logo}>
                     <strong>REACT DEMO</strong>
                 </div>

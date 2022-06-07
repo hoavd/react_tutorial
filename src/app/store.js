@@ -1,9 +1,9 @@
 import axios from 'axios'
 import {configureStore} from '@reduxjs/toolkit'
-import counterReducer from '../features/counter/counterSlice'
 import auth from '../reducers/auth'
 import axiosMiddleware from "redux-axios-middleware";
 import {logout} from "../action/Login";
+import userInfo from "../reducers/userInfo";
 
 const client = axios.create({ //all axios can be used, shown in axios documentation
     headers: {
@@ -15,7 +15,7 @@ const client = axios.create({ //all axios can be used, shown in axios documentat
 
 client.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("accessToken")
         if (token) {
             config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
             // config.headers["x-access-token"] = token; // for Node.js Express back-end
@@ -56,6 +56,7 @@ const middlewareConfig = {
 export default configureStore({
     reducer: {
         auth: auth,
+        userInfo: userInfo,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(axiosMiddleware(client, middlewareConfig)),
 

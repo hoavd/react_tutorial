@@ -1,16 +1,12 @@
 import React, {useContext, useEffect} from "react";
 import {Navigate, useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import MainLayout from "../page/Layout/MainLayout";
+import TokenService from "../service/auth/token.service";
 
 const AuthorizedRoute = ({component}) => {
     const location = useLocation();
-    const token = useSelector((state) => state.auth.token)
-
-    /*    useEffect(() => {
-
-        }, []);*/
-
+    console.log(location);
+    const token = TokenService.getAccessToken()
     return token ?
         <MainLayout component={component}/> : <Navigate to="/login" replace state={{path: location.pathname}}/>;
 };

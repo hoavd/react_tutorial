@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 
 function SidebarItem({sideBar}) {
     const [active, setActive] = useState(false);
-console.log(sideBar.href)
     function handleClick(e) {
     }
     return (

@@ -2,13 +2,14 @@ import {createSlice} from '@reduxjs/toolkit'
 import TokenService from "../service/auth/token.service";
 
 const initialState = {
-    token: TokenService.getAccessToken,
+    token: '',
 }
 
 function auth(state = initialState, action) {
+    console.log(action)
     switch (action.type) {
         case 'LOGIN_SUCCESS':
-            console.log(action)
+            TokenService.setToken(action.payload.data.access_token)
             return {
                 ...state,
                 token: action.payload.data.access_token
@@ -16,6 +17,7 @@ function auth(state = initialState, action) {
         case 'LOGIN_FAIL':
             return state
         case 'LOGOUT':
+            // TokenService.setToken("")
             return {
                 ...state,
                 token: ""
