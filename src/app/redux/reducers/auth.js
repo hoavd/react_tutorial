@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
-import TokenService from "../service/auth/token.service";
+import TokenService from "../../../service/auth/token.service";
+import * as Constants from "../../constants";
 
 const initialState = {
     token: '',
@@ -8,16 +9,16 @@ const initialState = {
 function auth(state = initialState, action) {
     console.log(action)
     switch (action.type) {
-        case 'LOGIN_SUCCESS':
+        case Constants.ACTION_LOGIN_SUCCESS:
             TokenService.setToken(action.payload.data.access_token)
             return {
                 ...state,
                 token: action.payload.data.access_token
             }
-        case 'LOGIN_FAIL':
+        case Constants.ACTION_LOGIN_FAIL:
             return state
-        case 'LOGOUT':
-            // TokenService.setToken("")
+        case Constants.ACTION_LOGOUT:
+            TokenService.removeToken()
             return {
                 ...state,
                 token: ""

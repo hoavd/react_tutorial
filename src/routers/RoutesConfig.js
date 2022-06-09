@@ -1,8 +1,8 @@
-import Login from "../page/Login";
-import Page404 from "../page/Page404";
-import Home from "../page/main/Home";
-import User from "../page/main/User";
-import Category from "../page/main/Category";
+import Login from "../app/page/Login";
+import Page404 from "../app/page/Page404";
+import Home from "../app/page/main/Home";
+import User from "../app/page/main/User";
+import Category from "../app/page/main/Category";
 
 const RoutesConfig = [
     {

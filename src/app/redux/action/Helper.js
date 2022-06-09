@@ -1,10 +1,12 @@
+import * as Constants from "../../constants";
+
 export function userInfo() {
     return {
-        type: 'USER_INFO',
+        type: Constants.ACTION_USER_INFO,
         payload: {
             request: {
                 url: '/user/publicInfo',
-                method: 'GET'
+                method: Constants.METHOD_GET
             }
         }
     }

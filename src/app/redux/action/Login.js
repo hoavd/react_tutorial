@@ -1,10 +1,12 @@
+import * as Constants from "../../constants";
+
 export function login(values) {
     return {
-        type: 'LOGIN',
+        type: Constants.ACTION_LOGIN,
         payload: {
             request: {
                 url: '/login',
-                method: 'POST',
+                method: Constants.METHOD_POST,
                 data: values
             }
         }
@@ -13,6 +15,6 @@ export function login(values) {
 
 export function logout() {
     return {
-        type: 'LOGOUT'
+        type: Constants.ACTION_LOGOUT
     }
 }

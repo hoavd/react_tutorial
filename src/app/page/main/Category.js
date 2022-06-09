@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {findListCategory} from "../../action/Category";
+import {findListCategory} from "../../redux/action/Category";
 import {toast} from "react-toastify";
-import CustomMaterialPagination from "../../component/CustomMaterialPagination";
-import DataTable from 'react-data-table-component';
 
 function Category() {
     const [data, setData] = useState([]);

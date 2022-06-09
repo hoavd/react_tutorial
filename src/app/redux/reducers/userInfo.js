@@ -1,3 +1,5 @@
+import * as Constants from "../../constants";
+
 const initialState = {
     username: "cf",
     fullname: "",
@@ -9,7 +11,7 @@ const initialState = {
 
 function userInfo(state = initialState, action) {
     switch (action.type) {
-        case 'USER_INFO_SUCCESS':
+        case Constants.ACTION_USER_INFO_SUCCESS:
             return {
                 ...state,
                 username: action.payload.data.username,

@@ -4,7 +4,7 @@ import Header from "./header/Header";
 import './MainLayout.css';
 import {Grid} from "@mui/material";
 import {useDispatch} from "react-redux";
-import {userInfo} from "../../action/UserInfo";
+import {userInfo} from "../../redux/action/Helper";
 
 function MainLayout({component}) {
     console.log("1")

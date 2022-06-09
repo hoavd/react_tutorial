@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import clsx from "clsx";
 import SideMenu from "./side_menu/SideMenu";
 import {useDispatch} from "react-redux";
-import {userInfo} from "../../../action/UserInfo";
 
 function Navbar() {
     const [navItems, setNavItems] = useState([]);
