@@ -7,7 +7,6 @@ import {useDispatch} from "react-redux";
 import {userInfo} from "../../redux/action/Helper";
 
 function MainLayout({component}) {
-    console.log("1")
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(userInfo())

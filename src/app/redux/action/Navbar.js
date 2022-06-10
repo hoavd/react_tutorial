@@ -2,7 +2,7 @@ import * as Constants from "../../constants";
 
 export function getNavItem() {
     return {
-        type: 'FIND_LIST_CATEGORY',
+        type: Constants.ACTION_GET_NAV_ITEM,
         payload: {
             request: {
                 url: '/fingerprint/navItem',

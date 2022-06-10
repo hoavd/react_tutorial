@@ -5,7 +5,7 @@ import TokenService from "../service/auth/token.service";
 
 const AuthorizedRoute = ({component}) => {
     const location = useLocation();
-    console.log(location);
+    // console.log(location);
     const token = TokenService.getAccessToken()
     return token ?
         <MainLayout component={component}/> : <Navigate to="/login" replace state={{path: location.pathname}}/>;

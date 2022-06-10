@@ -59,7 +59,7 @@
 }
 
 .nav__active,.nav__active .nav__link{
-    color: var(--first-color);
+    color: var(--first-color) !important;
 }
 
 .nav__icon {

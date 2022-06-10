@@ -3,6 +3,7 @@ import Page404 from "../app/page/Page404";
 import Home from "../app/page/main/Home";
 import User from "../app/page/main/User";
 import Category from "../app/page/main/Category";
+import Demo from "../app/page/main/demo";
 
 const RoutesConfig = [
     {
@@ -38,6 +39,11 @@ const RoutesConfig = [
     {
         path: "/users",
         component: User,
+        auth: true
+    },
+    {
+        path: "/component",
+        component: Demo,
         auth: true
     },
 

@@ -7,7 +7,6 @@ const initialState = {
 }
 
 function auth(state = initialState, action) {
-    console.log(action)
     switch (action.type) {
         case Constants.ACTION_LOGIN_SUCCESS:
             TokenService.setToken(action.payload.data.access_token)
@@ -34,7 +33,6 @@ function auth(state = initialState, action) {
     reducers: {
         LOGIN_SUCCESS: (state) => {
             debugger
-            console.log(state)
             return state
         }
     },

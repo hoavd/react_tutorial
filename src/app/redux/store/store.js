@@ -4,6 +4,7 @@ import auth from '../reducers/auth'
 import axiosMiddleware from "redux-axios-middleware";
 import {logout} from "../action/Login";
 import userInfo from "../reducers/userInfo";
+import {useSelector} from "react-redux";
 
 const client = axios.create({ //all axios can be used, shown in axios documentation
     headers: {
@@ -13,31 +14,34 @@ const client = axios.create({ //all axios can be used, shown in axios documentat
     responseType: 'json'
 });
 
-client.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("accessToken")
-        if (token) {
-            config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
-            // config.headers["x-access-token"] = token; // for Node.js Express back-end
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
-
 const middlewareConfig = {
     returnRejectedPromiseOnError: true,
     interceptors: {
+        request: [{
+            success: function ({getState, dispatch, getSourceAction}, req) {
+                const token = localStorage.getItem("accessToken")
+                if (token) {
+                    req.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
+                    // config.headers["x-access-token"] = token; // for Node.js Express back-end
+                    req.headers["specializedBankId"] = 1;
+                }
+                return req;
+            },
+            error: function ({getState, dispatch, getSourceAction}, error) {
+                return Promise.reject(error);
+            }
+        }
+        ],
         response: [{
             success: function ({getState, dispatch, getSourceAction}, req) {
-                console.log(req)
+                // console.log(req)
                 return req
             },
             error: function ({getState, dispatch, getSourceAction}, error) {
-                console.log(error)
-                dispatch(logout())
+                if(error.response.status === 401){
+                    dispatch(logout())
+                    error.response.data.message = 'Truy cập hết hạn!'
+                }
                 return Promise.reject(error)
             }
         }
