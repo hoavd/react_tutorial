@@ -52,12 +52,12 @@ function EditCategory() {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            code: data.code ? data.code : '',
-            name: data.name ? data.name : '',
-            description: data.description ? data.description : '',
+            code: data.code ?? '',
+            name: data.name ?? '',
+            description: data.description ?? '',
             dynamic: true,
-            sortOrder: data.sortOrder ? data.sortOrder : 0,
-            status: data.status ? data.status : false
+            sortOrder: data.sortOrder ?? 0,
+            status: data.status ?? false
         },
         validate: (values) => {
             const errors = {};

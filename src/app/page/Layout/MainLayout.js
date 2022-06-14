@@ -5,6 +5,7 @@ import './MainLayout.css';
 import {Grid} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {userInfo} from "../../redux/action/Helper";
+import {LoadingBar} from "react-redux-loading-bar";
 
 function MainLayout({component}) {
     const dispatch = useDispatch()
@@ -19,6 +20,9 @@ function MainLayout({component}) {
             <Grid container spacing={2} style={{"marginTop": "0"}}>
                 {component}
             </Grid>
+            <section>
+                <LoadingBar scope="sectionBar" />
+            </section>
         </div>
     );
 }

@@ -4,7 +4,7 @@ import auth from '../reducers/auth'
 import axiosMiddleware from "redux-axios-middleware";
 import {logout} from "../action/Login";
 import userInfo from "../reducers/userInfo";
-import {useSelector} from "react-redux";
+import {loadingBarMiddleware, loadingBarReducer} from "react-redux-loading-bar";
 
 const client = axios.create({ //all axios can be used, shown in axios documentation
     headers: {
@@ -38,7 +38,7 @@ const middlewareConfig = {
                 return req
             },
             error: function ({getState, dispatch, getSourceAction}, error) {
-                if(error.response.status === 401){
+                if (error.response.status === 401) {
                     dispatch(logout())
                     error.response.data.message = 'Truy cập hết hạn!'
                 }
@@ -53,7 +53,13 @@ export default configureStore({
     reducer: {
         auth: auth,
         userInfo: userInfo,
+        loadingBar: loadingBarReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(axiosMiddleware(client, middlewareConfig)),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
+        axiosMiddleware(client, middlewareConfig),
+        loadingBarMiddleware({
+            scope: 'sectionBar',
+        })
+    ),
 
 });

@@ -8,6 +8,7 @@ import CustomDatatable from "../../../component/datatable/CustomDatatable";
 import {useNavigate} from "react-router-dom";
 import {Done, Error} from "@mui/icons-material";
 import DialogConfirmation from "../../../component/common/DialogConfirmation";
+import {hideLoading, showLoading} from "react-redux-loading-bar";
 
 
 function Category() {
@@ -66,9 +67,9 @@ function Category() {
             // console.log(action)
             // console.log(state)
             if (action === 'search') {
-                setQuery(state.searchText ? state.searchText : '')
+                setQuery(state.searchText ?? '')
             } else if (action === 'changeRowsPerPage') {
-                setMax(state.rowsPerPage ? state.rowsPerPage : 10)
+                setMax(state.rowsPerPage ?? 10)
             } else if (action === 'changePage') {
                 setOffset(state.rowsPerPage * (state.page))
             } else if (action === 'sort') {
@@ -81,7 +82,8 @@ function Category() {
     );
 
     const getListCategory = async () => {
-        console.log(1)
+        dispatch(showLoading('sectionBar'))
+
         await dispatch(findListCategory(max, offset, order, query, sort)).then(resp => {
             setData(resp.payload.data)
         }).catch((err) => {
@@ -89,6 +91,7 @@ function Category() {
                 position: toast.POSITION.TOP_RIGHT
             });
         })
+        dispatch(hideLoading('sectionBar'))
     }
 
     const dispatch = useDispatch()

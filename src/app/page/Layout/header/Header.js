@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import {AccountCircle} from "@mui/icons-material";
 import {useSelector} from "react-redux";
+import {LoadingBar} from "react-redux-loading-bar";
 
 function Header() {
     const userInfo = useSelector((state) => state.userInfo)
