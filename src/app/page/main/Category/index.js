@@ -1,10 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {deleteCategory, findListCategory} from "../../redux/action/Category";
+import {deleteCategory, findListCategory} from "../../../redux/action/Category";
 import {toast} from "react-toastify";
 import Button from '@mui/material/Button';
-import {Dialog, DialogTitle, Grid, DialogContent, DialogActions, DialogContentText, TextField} from "@mui/material";
-import CustomDatatable from "../../component/CustomDatatable";
+import {Dialog, DialogTitle, Grid, DialogContent, DialogActions, DialogContentText, Tooltip} from "@mui/material";
+import CustomDatatable from "../../../component/datatable/CustomDatatable";
+import {useNavigate} from "react-router-dom";
+import {Done, Error} from "@mui/icons-material";
+
 
 function Category() {
     const [data, setData] = useState([]);
@@ -16,13 +19,17 @@ function Category() {
     const [reloadTable, setReloadTable] = useState(false);
     const [rowData, setRowData] = useState(null);
     const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+    const handleAddOnclick = (() => {
+        navigate('/category/create');
+    });
+
     const handleAccept = async () => {
-        console.log(rowData)
         await dispatch(deleteCategory(rowData.rowData[0])).then(resp => {
             console.log(resp)
             if (resp.payload.data.success) {
@@ -51,8 +58,11 @@ function Category() {
         handleClickOpen()
         setRowData(tableMeta)
     }
+    const editRow = (tableMeta) => {
+        navigate(`/category/edit/${tableMeta.rowData[0]}`);
+    }
 
-    const handleTableChange = useCallback((action, state) => {
+    const handleTableChange = ((action, state) => {
             // console.log(action)
             // console.log(state)
             if (action === 'search') {
@@ -120,6 +130,26 @@ function Category() {
             }
         },
         {
+            name: "status",
+            label: "Trạng thái",
+            options: {
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    if (value)
+                        return (
+                            <Tooltip title="Hoạt động">
+                                <Done color="primary" />
+                            </Tooltip>
+                        );
+                    else
+                        return (
+                            <Tooltip title="Ngừng hoạt động">
+                                <Error color="error" />
+                            </Tooltip>
+                        );
+                }
+            }
+        },
+        {
             name: "Thao tác",
             options: {
                 filter: false,
@@ -128,11 +158,21 @@ function Category() {
 
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
-                        <Button variant="outlined" color="error" onClick={(event) => {
-                            deleteRow(tableMeta)
-                        }}>
-                            Xóa
-                        </Button>
+                        <>
+                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="primary"
+                                    onClick={(event) => {
+                                        editRow(tableMeta)
+                                    }}>
+                                <i className="fas fa-pencil-alt"/>
+                            </Button>
+
+                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="error"
+                                    onClick={(event) => {
+                                        deleteRow(tableMeta)
+                                    }}>
+                                <i className="fas fa-trash"/>
+                            </Button>
+                        </>
                     );
                 }
             }
@@ -141,7 +181,9 @@ function Category() {
 
     return (
         <Grid item xs={8}>
-            <CustomDatatable data={data.categoryList} columns={columns} handleTableChange={handleTableChange}
+            <CustomDatatable data={data.categoryList} columns={columns}
+                             handleTableChange={handleTableChange}
+                             handleAddOnclick={handleAddOnclick}
                              count={data.categoryTotal}
                              title={"Danh mục động"}/>
             <Dialog open={open} onClose={handleClose}>

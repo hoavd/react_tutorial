@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import MUIDataTable, {debounceSearchRender} from "mui-datatables";
+import CustomToolbar from "./CustomToolbar";
 
-function CustomDatatable({data, columns, handleTableChange, count, title}) {
+function CustomDatatable({data, columns, handleTableChange, count, title, handleAddOnclick}) {
     const [responsive, setResponsive] = useState("vertical");
     const [tableBodyHeight, setTableBodyHeight] = useState("600px");
     const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("600px");
@@ -28,7 +29,8 @@ function CustomDatatable({data, columns, handleTableChange, count, title}) {
             },
         serverSide: true,
         customSearchRender: debounceSearchRender(500),
-        count: count
+        count: count,
+        customToolbar: handleAddOnclick ? () => <CustomToolbar handleAddOnclick={handleAddOnclick}/> : false
     };
 
     return (

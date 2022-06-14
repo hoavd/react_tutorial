@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import MUIDataTable,{ExpandButton} from "mui-datatables";
 import {createTheme, Grid, TableCell, TableRow} from "@mui/material";
-import CustomDatatable from "../../component/CustomDatatable";
+import CustomDatatable from "../../component/datatable/CustomDatatable";
 
 function Demo() {
 

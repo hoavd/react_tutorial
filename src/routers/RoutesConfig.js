@@ -4,6 +4,8 @@ import Home from "../app/page/main/Home";
 import User from "../app/page/main/User";
 import Category from "../app/page/main/Category";
 import Demo from "../app/page/main/demo";
+import EditCategory from "../app/page/main/Category/edit";
+import CreateCategory from "../app/page/main/Category/create";
 
 const RoutesConfig = [
     {
@@ -29,6 +31,16 @@ const RoutesConfig = [
     {
         path: "/category",
         component: Category,
+        auth: true
+    },
+    {
+        path: "/category/edit/:id",
+        component: EditCategory,
+        auth: true
+    },
+    {
+        path: "/category/create",
+        component: CreateCategory,
         auth: true
     },
     {
