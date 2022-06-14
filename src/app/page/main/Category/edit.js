@@ -1,7 +1,7 @@
-import {Button, Grid, TextField, Container, InputLabel, InputBase, FormControlLabel, Switch} from "@mui/material";
+import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {Field, Form, useFormik} from "formik";
+import {useFormik} from "formik";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {editCategory, getCategory} from "../../../redux/action/Category";
@@ -24,6 +24,7 @@ function EditCategory() {
             });
         })
     }
+
     useEffect(() => {
         loadCategory(`${id}`)
     }, []);

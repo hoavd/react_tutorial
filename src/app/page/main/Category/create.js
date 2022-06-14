@@ -40,6 +40,7 @@ function CreateCategory() {
             sortOrder: 0,
             status: true
         },
+        isInitialValid: false,
         validate: (values) => {
             const errors = {};
             if (!values.code) {

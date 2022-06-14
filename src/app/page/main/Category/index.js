@@ -3,10 +3,11 @@ import {useDispatch} from "react-redux";
 import {deleteCategory, findListCategory} from "../../../redux/action/Category";
 import {toast} from "react-toastify";
 import Button from '@mui/material/Button';
-import {Dialog, DialogTitle, Grid, DialogContent, DialogActions, DialogContentText, Tooltip} from "@mui/material";
+import {Grid, Tooltip} from "@mui/material";
 import CustomDatatable from "../../../component/datatable/CustomDatatable";
 import {useNavigate} from "react-router-dom";
 import {Done, Error} from "@mui/icons-material";
+import DialogConfirmation from "../../../component/common/DialogConfirmation";
 
 
 function Category() {
@@ -16,7 +17,6 @@ function Category() {
     const [order, setOrder] = useState('');
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState('');
-    const [reloadTable, setReloadTable] = useState(false);
     const [rowData, setRowData] = useState(null);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
@@ -41,7 +41,7 @@ function Category() {
                     position: toast.POSITION.TOP_RIGHT
                 });
             }
-            setReloadTable(!reloadTable)
+            getListCategory()
         }).catch((err) => {
             toast.error(err.error.response.data.message, {
                 position: toast.POSITION.TOP_RIGHT
@@ -94,7 +94,7 @@ function Category() {
     const dispatch = useDispatch()
     useEffect(() => {
         getListCategory()
-    }, [max, offset, order, query, sort, reloadTable])
+    }, [max, offset, order, query, sort])
 
     const columns = [
         {
@@ -102,7 +102,7 @@ function Category() {
             label: "ID",
             options: {
                 filter: true,
-                sort: false,
+                sort: true,
             }
         },
         {
@@ -137,13 +137,13 @@ function Category() {
                     if (value)
                         return (
                             <Tooltip title="Hoạt động">
-                                <Done color="primary" />
+                                <Done color="primary"/>
                             </Tooltip>
                         );
                     else
                         return (
                             <Tooltip title="Ngừng hoạt động">
-                                <Error color="error" />
+                                <Error color="error"/>
                             </Tooltip>
                         );
                 }
@@ -186,18 +186,12 @@ function Category() {
                              handleAddOnclick={handleAddOnclick}
                              count={data.categoryTotal}
                              title={"Danh mục động"}/>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Xóa</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Bạn chắc chắn muốn xóa bản ghi này này?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleAccept}>Đồng ý</Button>
-                    <Button onClick={handleClose}>Không</Button>
-                </DialogActions>
-            </Dialog>
+
+            <DialogConfirmation open={open} title={"Xóa"}
+                                handleAccept={handleAccept}
+                                handleClose={handleClose}
+                                content={"Bạn chắc chắn muốn xóa bản ghi này này?"}
+            />
         </Grid>
     );
 }
