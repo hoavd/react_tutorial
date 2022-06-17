@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {deleteCategory, findListCategory} from "../../../redux/action/Category";
+import {deleteModelType, findListModelType} from "../../../redux/action/ModelType";
 import {toast} from "react-toastify";
 import Button from '@mui/material/Button';
-import {Grid, Tooltip} from "@mui/material";
+import {Grid, Tooltip, Typography} from "@mui/material";
 import CustomDatatable from "../../../component/datatable/CustomDatatable";
 import {useNavigate} from "react-router-dom";
 import {Done, Error} from "@mui/icons-material";
@@ -11,7 +11,7 @@ import DialogConfirmation from "../../../component/common/DialogConfirmation";
 import {hideLoading, showLoading} from "react-redux-loading-bar";
 
 
-function Category() {
+function ModelType() {
     const [data, setData] = useState([]);
     const [max, setMax] = useState(10);
     const [offset, setOffset] = useState(0);
@@ -27,11 +27,11 @@ function Category() {
     };
 
     const handleAddOnclick = (() => {
-        navigate('/category/create');
+        navigate('/modelType/create');
     });
 
     const handleAccept = async () => {
-        await dispatch(deleteCategory(rowData.rowData[0])).then(resp => {
+        await dispatch(deleteModelType(rowData.rowData[0])).then(resp => {
             console.log(resp)
             if (resp.payload.data.success) {
                 toast.success(resp.payload.data.msg, {
@@ -42,7 +42,7 @@ function Category() {
                     position: toast.POSITION.TOP_RIGHT
                 });
             }
-            getListCategory()
+            getListModelType()
         }).catch((err) => {
             toast.error(err.error.response.data.message, {
                 position: toast.POSITION.TOP_RIGHT
@@ -60,7 +60,7 @@ function Category() {
         setRowData(tableMeta)
     }
     const editRow = (tableMeta) => {
-        navigate(`/category/edit/${tableMeta.rowData[0]}`);
+        navigate(`/modelType/edit/${tableMeta.rowData[0]}`);
     }
 
     const handleTableChange = ((action, state) => {
@@ -81,9 +81,10 @@ function Category() {
         }
     );
 
-    const getListCategory = async () => {
+    const getListModelType = async () => {
         dispatch(showLoading())
-        await dispatch(findListCategory(max, offset, order, query, sort)).then(resp => {
+
+        await dispatch(findListModelType(max, offset, order, query, sort)).then(resp => {
             setData(resp.payload.data)
         }).catch((err) => {
             toast.error(err.error.response.data.message, {
@@ -95,7 +96,7 @@ function Category() {
 
     const dispatch = useDispatch()
     useEffect(() => {
-        getListCategory()
+        getListModelType()
     }, [max, offset, order, query, sort])
 
     const columns = [
@@ -109,7 +110,7 @@ function Category() {
         },
         {
             name: "code",
-            label: "Mã danh mục",
+            label: "Mã",
             options: {
                 filter: true,
                 sort: true,
@@ -117,10 +118,11 @@ function Category() {
         },
         {
             name: "name",
-            label: "Tên danh mục",
+            label: "Tên",
             options: {
                 filter: true,
                 sort: true,
+
             }
         },
         {
@@ -148,6 +150,27 @@ function Category() {
                                 <Error color="error"/>
                             </Tooltip>
                         );
+                }
+            }
+        },
+        {
+            name: "Model Type Info",
+            options: {
+                filter: false,
+                sort: false,
+                empty: true,
+
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return (
+                        <>
+                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="primary"
+                                    onClick={(event) => {
+                                        editRow(tableMeta)
+                                    }}>
+                                <i className="fas fa-share"/>
+                            </Button>
+                        </>
+                    );
                 }
             }
         },
@@ -183,11 +206,11 @@ function Category() {
 
     return (
         <Grid item xs={8}>
-            <CustomDatatable data={data.categoryList} columns={columns}
+            <CustomDatatable data={data.modelTypeList} columns={columns}
                              handleTableChange={handleTableChange}
                              handleAddOnclick={handleAddOnclick}
-                             count={data.categoryTotal}
-                             title={"Danh mục động"}/>
+                             count={data.modelTypeTotal}
+                             title={"Mô hình"}/>
 
             <DialogConfirmation open={open} title={"Xóa"}
                                 handleAccept={handleAccept}
@@ -198,4 +221,4 @@ function Category() {
     );
 }
 
-export default Category;
+export default ModelType;

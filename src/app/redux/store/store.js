@@ -4,7 +4,7 @@ import auth from '../reducers/auth'
 import axiosMiddleware from "redux-axios-middleware";
 import {logout} from "../action/Login";
 import userInfo from "../reducers/userInfo";
-import {loadingBarMiddleware, loadingBarReducer} from "react-redux-loading-bar";
+import {loadingBarReducer} from "react-redux-loading-bar";
 
 const client = axios.create({ //all axios can be used, shown in axios documentation
     headers: {
@@ -56,10 +56,7 @@ export default configureStore({
         loadingBar: loadingBarReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
-        axiosMiddleware(client, middlewareConfig),
-        loadingBarMiddleware({
-            scope: 'sectionBar',
-        })
+        axiosMiddleware(client, middlewareConfig)
     ),
 
 });

@@ -4,12 +4,13 @@ import clsx from 'clsx'
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import {AccountCircle} from "@mui/icons-material";
 import {useSelector} from "react-redux";
-import {LoadingBar} from "react-redux-loading-bar";
 
 function Header() {
     const userInfo = useSelector((state) => state.userInfo)
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const loadingBar = useSelector((state) => state.loadingBar)
+    console.log(loadingBar)
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -60,7 +61,8 @@ function Header() {
                         onClose={handleClose}
                     >
 
-                        <MenuItem onClick={handleClose}><span style={{fontWeight: "bold"}}>{userInfo?.username}</span></MenuItem>
+                        <MenuItem onClick={handleClose}><span
+                            style={{fontWeight: "bold"}}>{userInfo?.username}</span></MenuItem>
                         <MenuItem onClick={handleClose}>Profile</MenuItem>
                     </Menu>
                 </div>

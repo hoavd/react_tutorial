@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import MUIDataTable, {debounceSearchRender} from "mui-datatables";
 import CustomToolbar from "./CustomToolbar";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 function CustomDatatable({data, columns, handleTableChange, count, title, handleAddOnclick}) {
     const [responsive, setResponsive] = useState("vertical");
-    const [tableBodyHeight, setTableBodyHeight] = useState("600px");
-    const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("600px");
+    const [tableBodyHeight, setTableBodyHeight] = useState("700px");
+    const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("700px");
     const [searchBtn, setSearchBtn] = useState(true);
     const [viewColumnBtn, setViewColumnBtn] = useState(true);
     const [downloadBtn, setDownloadBtn] = useState(false);
@@ -33,13 +34,30 @@ function CustomDatatable({data, columns, handleTableChange, count, title, handle
         customToolbar: handleAddOnclick ? () => <CustomToolbar handleAddOnclick={handleAddOnclick}/> : false
     };
 
+    const getMuiTheme = () => createTheme({
+        components: {
+            MUIDataTableBodyCell: {
+                styleOverrides: {
+                    root: {
+                        // '&:nth-child(2)': {
+                        //     width: 100
+                        // }
+                    }
+                }
+            }
+        }
+    })
+
     return (
-        <MUIDataTable
-            title={title}
-            data={data}
-            columns={columns}
-            options={options}
-        />
+        <ThemeProvider theme={getMuiTheme()}>
+            <MUIDataTable
+                title={title}
+                data={data}
+                columns={columns}
+                options={options}
+            />
+        </ThemeProvider>
+
     );
 }
 

@@ -6,6 +6,9 @@ import Category from "../app/page/main/Category";
 import Demo from "../app/page/main/demo";
 import EditCategory from "../app/page/main/Category/edit";
 import CreateCategory from "../app/page/main/Category/create";
+import ModelType from "../app/page/main/ModelType";
+import EditModelType from "../app/page/main/ModelType/edit";
+import CreateModelType from "../app/page/main/ModelType/create";
 
 const RoutesConfig = [
     {
@@ -56,6 +59,22 @@ const RoutesConfig = [
     {
         path: "/component",
         component: Demo,
+        auth: true
+    },
+
+    {
+        path: "/modelType",
+        component: ModelType,
+        auth: true
+    },
+    {
+        path: "/modelType/edit/:id",
+        component: EditModelType,
+        auth: true
+    },
+    {
+        path: "/modelType/create",
+        component: CreateModelType,
         auth: true
     },
 

@@ -5,11 +5,14 @@ import routeConfig from "./routers/RoutesConfig";
 import AuthorizedRoute from "./routers/AuthorizedRoute";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import LoadingBar from "react-redux-loading-bar";
 
 function App() {
 
     return (
         <BrowserRouter>
+            <LoadingBar showFastActions
+                        style={{zIndex: 99999, top: 0, position: "fixed", backgroundColor: '#6923D0'}}/>
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
