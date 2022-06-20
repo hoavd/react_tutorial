@@ -10,7 +10,6 @@ function Header() {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const loadingBar = useSelector((state) => state.loadingBar)
-    console.log(loadingBar)
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };

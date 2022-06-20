@@ -1,4 +1,3 @@
-import {createSlice} from '@reduxjs/toolkit'
 import TokenService from "../../../service/auth/token.service";
 import * as Constants from "../../constants";
 

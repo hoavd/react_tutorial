@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {deleteModelType, findListModelType} from "../../../redux/action/ModelType";
 import {toast} from "react-toastify";
 import Button from '@mui/material/Button';
-import {Grid, Tooltip, Typography} from "@mui/material";
+import {Grid, Tooltip} from "@mui/material";
 import CustomDatatable from "../../../component/datatable/CustomDatatable";
 import {useNavigate} from "react-router-dom";
 import {Done, Error} from "@mui/icons-material";
@@ -32,7 +32,6 @@ function ModelType() {
 
     const handleAccept = async () => {
         await dispatch(deleteModelType(rowData.rowData[0])).then(resp => {
-            console.log(resp)
             if (resp.payload.data.success) {
                 toast.success(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT
@@ -61,6 +60,10 @@ function ModelType() {
     }
     const editRow = (tableMeta) => {
         navigate(`/modelType/edit/${tableMeta.rowData[0]}`);
+    }
+
+    const goModelTypeInfo = (tableMeta) => {
+        navigate(`/modelType/${tableMeta.rowData[0]}/modelTypeInfo`);
     }
 
     const handleTableChange = ((action, state) => {
@@ -165,7 +168,7 @@ function ModelType() {
                         <>
                             <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="primary"
                                     onClick={(event) => {
-                                        editRow(tableMeta)
+                                        goModelTypeInfo(tableMeta)
                                     }}>
                                 <i className="fas fa-share"/>
                             </Button>
@@ -184,14 +187,14 @@ function ModelType() {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="primary"
+                            <Button style={{border: "0px", padding: "5px", minWidth: "unset"}} variant="outlined" color="primary"
                                     onClick={(event) => {
                                         editRow(tableMeta)
                                     }}>
                                 <i className="fas fa-pencil-alt"/>
                             </Button>
 
-                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="error"
+                            <Button style={{border: "0px", padding: "5px", minWidth: "unset"}} variant="outlined" color="error"
                                     onClick={(event) => {
                                         deleteRow(tableMeta)
                                     }}>

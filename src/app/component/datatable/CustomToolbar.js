@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 function CustomToolbar({handleAddOnclick}) {
     return (
         <span>
-            <Button className={clsx("MuiButtonBase-root")} type={"button"} onClick={handleAddOnclick}>
+            <Button title={"Thêm mới"} className={clsx("MuiButtonBase-root")} type={"button"} onClick={handleAddOnclick}>
                 <AddIcon/>
             </Button>
         </span>

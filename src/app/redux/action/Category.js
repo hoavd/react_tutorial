@@ -1,5 +1,4 @@
 import * as Constants from "../../constants";
-import {ACTION_CATEGORY_EDIT, ACTION_CATEGORY_GET} from "../../constants";
 
 export function findListCategory(max, offset, order, query, sort) {
     return {

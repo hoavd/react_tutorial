@@ -32,7 +32,6 @@ function Category() {
 
     const handleAccept = async () => {
         await dispatch(deleteCategory(rowData.rowData[0])).then(resp => {
-            console.log(resp)
             if (resp.payload.data.success) {
                 toast.success(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT

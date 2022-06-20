@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {deleteModelType, findListModelType} from "../../../../redux/action/ModelType";
+import {deleteModelTypeInfo, findListModelTypeInfo} from "../../../../redux/action/ModelTypeInfo";
 import {toast} from "react-toastify";
 import Button from '@mui/material/Button';
 import {Grid, Tooltip} from "@mui/material";
 import CustomDatatable from "../../../../component/datatable/CustomDatatable";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Done, Error} from "@mui/icons-material";
 import DialogConfirmation from "../../../../component/common/DialogConfirmation";
 import {hideLoading, showLoading} from "react-redux-loading-bar";
 
 
-function ModelType() {
+function ModelTypeInfo() {
     const [data, setData] = useState([]);
     const [max, setMax] = useState(10);
     const [offset, setOffset] = useState(0);
@@ -21,6 +21,7 @@ function ModelType() {
     const [rowData, setRowData] = useState(null);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
+    const {id} = useParams();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -31,8 +32,7 @@ function ModelType() {
     });
 
     const handleAccept = async () => {
-        await dispatch(deleteModelType(rowData.rowData[0])).then(resp => {
-            console.log(resp)
+        await dispatch(deleteModelTypeInfo(rowData.rowData[0])).then(resp => {
             if (resp.payload.data.success) {
                 toast.success(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT
@@ -42,7 +42,7 @@ function ModelType() {
                     position: toast.POSITION.TOP_RIGHT
                 });
             }
-            getListModelType()
+            getListModelTypeInfo()
         }).catch((err) => {
             toast.error(err.error.response.data.message, {
                 position: toast.POSITION.TOP_RIGHT
@@ -81,10 +81,10 @@ function ModelType() {
         }
     );
 
-    const getListModelType = async () => {
+    const getListModelTypeInfo = async () => {
         dispatch(showLoading())
 
-        await dispatch(findListModelType(max, offset, order, query, sort)).then(resp => {
+        await dispatch(findListModelTypeInfo(id, max, offset, order, query, sort)).then(resp => {
             setData(resp.payload.data)
         }).catch((err) => {
             toast.error(err.error.response.data.message, {
@@ -96,7 +96,7 @@ function ModelType() {
 
     const dispatch = useDispatch()
     useEffect(() => {
-        getListModelType()
+        getListModelTypeInfo()
     }, [max, offset, order, query, sort])
 
     const columns = [
@@ -162,14 +162,14 @@ function ModelType() {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="primary"
+                            <Button style={{border: "0px", padding: "5px", minWidth: "unset"}} variant="outlined" color="primary"
                                     onClick={(event) => {
                                         editRow(tableMeta)
                                     }}>
                                 <i className="fas fa-pencil-alt"/>
                             </Button>
 
-                            <Button style={{border: "0px", padding: "0px"}} variant="outlined" color="error"
+                            <Button style={{border: "0px", padding: "5px", minWidth: "unset"}} variant="outlined" color="error"
                                     onClick={(event) => {
                                         deleteRow(tableMeta)
                                     }}>
@@ -199,4 +199,4 @@ function ModelType() {
     );
 }
 
-export default ModelType;
+export default ModelTypeInfo;

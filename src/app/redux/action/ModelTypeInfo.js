@@ -1,11 +1,11 @@
 import * as Constants from "../../constants";
 
-export function findListModelTypeInfo(max, offset, order, query, sort) {
+export function findListModelTypeInfo(id, max, offset, order, query, sort) {
     return {
         type: Constants.ACTION_MODEL_TYPE_INFO_FIND_LIST,
         payload: {
             request: {
-                url: `/modelTypeInfo?max=${max}&offset=${offset}&order=${order}&query=${query}&sort=${sort}`,
+                url: `/modelType/${id}/modelTypeInfo?max=${max}&offset=${offset}&order=${order}&query=${query}&sort=${sort}`,
                 method: Constants.METHOD_GET
             }
         }
@@ -57,6 +57,18 @@ export function editModelTypeInfo(modelTypeInfoId, data) {
                 url: `/modelTypeInfo/${modelTypeInfoId}`,
                 method: Constants.METHOD_PUT,
                 data: data
+            }
+        }
+    }
+}
+
+export function getListModelTypeParam() {
+    return {
+        type: Constants.ACTION_MODEL_TYPE_INFO_GET_PARAM,
+        payload: {
+            request: {
+                url: `/modelTypeInfo/modelTypeParam?max=1000&offset=0&order=asc&query=&sort=id`,
+                method: Constants.METHOD_GET
             }
         }
     }
