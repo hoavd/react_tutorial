@@ -1,5 +1,5 @@
 import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
-import React from "react";
+import React, {memo} from "react";
 import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import {toast} from "react-toastify";
@@ -10,7 +10,7 @@ import {createCategory} from "../../../redux/action/Category";
 function CreateCategory() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-
+    // console.log(1)
     const handleSubmitForm = async (values) => {
         await dispatch(createCategory(values)).then(resp => {
             if (resp.payload.data.success) {
@@ -118,4 +118,4 @@ function CreateCategory() {
     );
 }
 
-export default CreateCategory;
+export default memo(CreateCategory);

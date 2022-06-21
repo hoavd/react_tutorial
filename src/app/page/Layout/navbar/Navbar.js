@@ -13,7 +13,6 @@ function Navbar() {
     const [navItems, setNavItems] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch()
-
     const logOut = () => {
         dispatch(logout())
     };

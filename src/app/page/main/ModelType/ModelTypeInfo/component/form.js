@@ -1,5 +1,5 @@
 import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import SidebarItem from "../../../../Layout/navbar/side_menu/sidebar_item/SidebarItem";
@@ -9,11 +9,12 @@ import {createModelTypeInfo} from "../../../../../redux/action/ModelTypeInfo";
 import {toast} from "react-toastify";
 import {useFormik} from "formik";
 import DynamicField from "../../../../../component/field/DynamicField";
+import {createCategory} from "../../../../../redux/action/Category";
 
 function FormModelTypeInfo({params, columnsDynamic}) {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    console.log(params)
+    // console.log(params)
     useEffect(() => {
     }, []);
 
@@ -63,6 +64,20 @@ function FormModelTypeInfo({params, columnsDynamic}) {
         <>
             <Container maxWidth="xl">
                 <form style={{width: "100%"}} onSubmit={formik.handleSubmit}>
+                  {/*  <Grid container spacing={0.5}>
+                        <Grid item xs={1}/>
+                        <Grid item xs={3}>
+                            <TextField id="code" name="code" type="text" label="Mã"
+                                       style={{width: "100%", margin: "10px"}}
+                                       onChange={formik.handleChange} value={formik.values.code}
+                            />
+
+                        </Grid>
+                        <Grid item xs={3}>
+
+                        </Grid>
+                    </Grid>*/}
+
                     <Grid container spacing={0.5}>
                         <Grid item xs={1}/>
                         <Grid item xs={3}>
@@ -99,7 +114,8 @@ function FormModelTypeInfo({params, columnsDynamic}) {
                             if (index % 2 === 0) {
                                 let field1 =
                                     <Grid key={index} item xs={3}>
-                                        <DynamicField key={index} id={params[index].code}
+                                        <DynamicField key={index} id={params[index].code} formik={formik}
+                                                      name={params[index].code}
                                                       label={params[index].componentLabel}
                                                       style={{width: "100%", margin: "10px"}}
                                                       onChange={formik.handleChange}
@@ -111,7 +127,8 @@ function FormModelTypeInfo({params, columnsDynamic}) {
                                 if (index + 1 < params.length) {
                                     field2 =
                                         <Grid key={index + 1} item xs={3}>
-                                            <DynamicField key={index + 1} id={params[index + 1].code}
+                                            <DynamicField key={index + 1} id={params[index + 1].code} formik={formik}
+                                                          name={params[index + 1].code}
                                                           label={params[index + 1].componentLabel}
                                                           style={{width: "100%", margin: "10px"}}
                                                           onChange={formik.handleChange}
@@ -152,4 +169,4 @@ function FormModelTypeInfo({params, columnsDynamic}) {
     );
 }
 
-export default FormModelTypeInfo;
+export default memo(FormModelTypeInfo);

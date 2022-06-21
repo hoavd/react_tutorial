@@ -9,6 +9,7 @@ import '../../assets/css/boxicons/css/boxicons.css'
 import '../../assets/css/fontawesomev5/css/all.css'
 
 function Login() {
+    console.log(5)
     const navigate = useNavigate();
     const dispatch = useDispatch()
     return (

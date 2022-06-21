@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styles from './Header.module.css'
 import clsx from 'clsx'
 import {IconButton, Menu, MenuItem} from "@mui/material";
@@ -8,8 +8,6 @@ import {useSelector} from "react-redux";
 function Header() {
     const userInfo = useSelector((state) => state.userInfo)
     const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const loadingBar = useSelector((state) => state.loadingBar)
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -84,4 +82,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default memo(Header);

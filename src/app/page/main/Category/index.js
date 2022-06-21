@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {deleteCategory, findListCategory} from "../../../redux/action/Category";
 import {toast} from "react-toastify";
@@ -197,4 +197,4 @@ function Category() {
     );
 }
 
-export default Category;
+export default memo(Category);

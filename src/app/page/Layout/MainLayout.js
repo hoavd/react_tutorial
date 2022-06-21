@@ -11,7 +11,6 @@ function MainLayout({component}) {
     useEffect(() => {
         dispatch(userInfo())
     }, [])
-
     return (
         <div className="body">
             <Header/>
