@@ -81,7 +81,7 @@ const RoutesConfig = [
         auth: true
     },
     {
-        path: "/modelType/:id/modelTypeInfo",
+        path: "/modelType/:modelTypeId/modelTypeInfo",
         component: ModelTypeInfo,
         auth: true
     },
@@ -91,7 +91,7 @@ const RoutesConfig = [
         auth: true
     },
     {
-        path: "/modelTypeInfo/create",
+        path: "/modelType/:modelTypeId/modelTypeInfo/create",
         component: CreateModelTypeInfo,
         auth: true
     },

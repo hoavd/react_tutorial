@@ -1,22 +1,42 @@
-import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
+import {Button, Grid, TextField, Container, FormControlLabel, Switch, Autocomplete} from "@mui/material";
 import React, {memo, useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import SidebarItem from "../../../../Layout/navbar/side_menu/sidebar_item/SidebarItem";
-import clsx from "clsx";
-import styles from "../../../../Layout/navbar/Navbar.module.css";
 import {createModelTypeInfo} from "../../../../../redux/action/ModelTypeInfo";
 import {toast} from "react-toastify";
 import {useFormik} from "formik";
 import DynamicField from "../../../../../component/field/DynamicField";
-import {createCategory} from "../../../../../redux/action/Category";
+import {findListModelType} from "../../../../../redux/action/ModelType";
+import CustomSelect from "../../../../../component/field/CustomPageSelect/CustomSelect";
 
-function FormModelTypeInfo({params, columnsDynamic}) {
+function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    // console.log(params)
-    useEffect(() => {
-    }, []);
+
+
+    const loadOptions = async (search, loadedOptions, {page}) => {
+        const offset = 5 * (page - 1)
+        let hasMore = false
+        let data = []
+        let total = 0
+        await dispatch(findListModelType(5, offset, '', search, '')).then(resp => {
+            let response = resp.payload.data.modelTypeList
+            response.map((d) => {
+                data.push({value: {id: d.id}, label: `${d.name}`})
+            })
+            total = resp.payload.data.modelTypeTotal
+            if (total > offset * page + 5) {
+                hasMore = true
+            }
+        })
+        return {
+            options: data,
+            hasMore: hasMore,
+            additional: {
+                page: page + 1,
+            },
+        };
+    }
 
     const handleSubmitForm = async (values) => {
         await dispatch(createModelTypeInfo(values)).then(resp => {
@@ -40,6 +60,7 @@ function FormModelTypeInfo({params, columnsDynamic}) {
 
     const formik = useFormik({
         initialValues: {
+            modelType: {id: modelTypeId},
             code: '',
             name: '',
             description: '',
@@ -60,23 +81,27 @@ function FormModelTypeInfo({params, columnsDynamic}) {
         onSubmit: handleSubmitForm
     });
 
+    console.log(formik.values)
+
     return (
         <>
             <Container maxWidth="xl">
                 <form style={{width: "100%"}} onSubmit={formik.handleSubmit}>
-                  {/*  <Grid container spacing={0.5}>
+                    <Grid container spacing={0.5}>
                         <Grid item xs={1}/>
                         <Grid item xs={3}>
-                            <TextField id="code" name="code" type="text" label="Mã"
-                                       style={{width: "100%", margin: "10px"}}
-                                       onChange={formik.handleChange} value={formik.values.code}
-                            />
+                            <CustomSelect id="modelType"
+                                          disabled={true}
+                                          name="modelType"
+                                          onChange={selectedOption =>
+                                              formik.setFieldValue('modelType', selectedOption.value)}
+                                          loadOptions={loadOptions}/>
 
                         </Grid>
                         <Grid item xs={3}>
 
                         </Grid>
-                    </Grid>*/}
+                    </Grid>
 
                     <Grid container spacing={0.5}>
                         <Grid item xs={1}/>
@@ -118,7 +143,6 @@ function FormModelTypeInfo({params, columnsDynamic}) {
                                                       name={params[index].code}
                                                       label={params[index].componentLabel}
                                                       style={{width: "100%", margin: "10px"}}
-                                                      onChange={formik.handleChange}
                                                       type={params[index].component.componentType.code}
                                                       component={params[index].component}/>
                                     </Grid>
@@ -131,7 +155,6 @@ function FormModelTypeInfo({params, columnsDynamic}) {
                                                           name={params[index + 1].code}
                                                           label={params[index + 1].componentLabel}
                                                           style={{width: "100%", margin: "10px"}}
-                                                          onChange={formik.handleChange}
                                                           type={params[index + 1].component.componentType.code}
                                                           component={params[index + 1].component}/>
                                         </Grid>

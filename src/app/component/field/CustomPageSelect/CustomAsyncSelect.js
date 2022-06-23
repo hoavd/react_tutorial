@@ -2,16 +2,25 @@ import React from "react";
 import {AsyncPaginate} from "react-select-async-paginate";
 import {useDispatch} from "react-redux";
 import {autocomplete} from "../../../redux/action/Helper";
+import {makeStyles} from "@material-ui/core/styles";
+import clsx from "clsx";
 
-function CustomAsyncSelect({id, name, label, style, categoryCode, value, formik}) {
+function CustomAsyncSelect({id, name, categoryCode, value, formik}) {
     const dispatch = useDispatch()
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            width: "100%",
+            margin: "10px"
+        },
+    }));
+    const classes = useStyles();
 
     const loadOptions = async (search, loadedOptions, {page}) => {
         const offset = 5 * (page - 1)
         let hasMore = false
         let data = []
         let total = 0
-        await dispatch(autocomplete(categoryCode, offset,search)).then(resp => {
+        await dispatch(autocomplete(categoryCode, offset, search)).then(resp => {
             let response = resp.payload.data.categoryDataList
             response.map((d) => {
                 data.push({value: d, label: `${d.code} - ${d.name}`})
@@ -31,22 +40,23 @@ function CustomAsyncSelect({id, name, label, style, categoryCode, value, formik}
     }
 
     return (
-        <>
-            <AsyncPaginate
-                id={id} name={name}
-                debounceTimeout={300}
-                value={value}
-                style={style}
-                loadOptions={loadOptions}
-                onChange={selectedOption =>
-                    formik.setFieldValue(categoryCode, selectedOption.value)
-                }
-
-                additional={{
-                    page: 1,
-                }}
-            />
-        </>
+        <AsyncPaginate
+            className={clsx(classes.root)}
+            id={id} name={name}
+            debounceTimeout={300}
+            value={value}
+            loadOptions={loadOptions}
+            onChange={selectedOption =>
+                formik.setFieldValue(categoryCode, selectedOption.value)
+            }
+            styles={{
+                // Fixes the overlapping problem of the component
+                menu: provided => ({ ...provided, zIndex: 9999 })
+            }}
+            additional={{
+                page: 1,
+            }}
+        />
     );
 }
 

@@ -21,14 +21,14 @@ function ModelTypeInfo() {
     const [rowData, setRowData] = useState(null);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
-    const {id} = useParams();
+    const {modelTypeId} = useParams();
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleAddOnclick = (() => {
-        navigate('/modelTypeInfo/create');
+        navigate(`/modelType/${modelTypeId}/modelTypeInfo/create`);
     });
 
     const handleAccept = async () => {
@@ -84,7 +84,7 @@ function ModelTypeInfo() {
     const getListModelTypeInfo = async () => {
         dispatch(showLoading())
 
-        await dispatch(findListModelTypeInfo(id, max, offset, order, query, sort)).then(resp => {
+        await dispatch(findListModelTypeInfo(modelTypeId, max, offset, order, query, sort)).then(resp => {
             setData(resp.payload.data)
         }).catch((err) => {
             toast.error(err.error.response.data.message, {

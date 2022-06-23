@@ -1,6 +1,6 @@
 import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useFormik} from "formik";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
@@ -13,6 +13,7 @@ function CreateModelTypeInfo() {
     const [columnsDynamic, setColumnsDynamic] = useState({});
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const {modelTypeId} = useParams();
 
     const loadModelTypeParam = async () => {
         await dispatch(getListModelTypeParam()).then(resp => {
@@ -38,7 +39,7 @@ function CreateModelTypeInfo() {
     return (
         <>
             <Container maxWidth="xl">
-                <FormModelTypeInfo params={params} columnsDynamic={columnsDynamic}/>
+                <FormModelTypeInfo modelTypeId={modelTypeId} params={params} columnsDynamic={columnsDynamic}/>
             </Container>
         </>
     );
