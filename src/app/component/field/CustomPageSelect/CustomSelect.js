@@ -3,7 +3,7 @@ import {AsyncPaginate} from "react-select-async-paginate";
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 
-function CustomSelect({name, onChange, loadOptions, disabled}) {
+function CustomSelect({name, onChange, loadOptions, disabled, inputValue}) {
     const useStyles = makeStyles((theme) => ({
         root: {
             width: "100%",
@@ -14,6 +14,7 @@ function CustomSelect({name, onChange, loadOptions, disabled}) {
     return (
         <>
             <AsyncPaginate
+                inputValue={inputValue}
                 disabled={disabled}
                 name={name}
                 debounceTimeout={300}

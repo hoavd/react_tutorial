@@ -1,3 +1,6 @@
+export const FORM_MODE_CREATE = 'CREATE';
+export const FORM_MODE_EDIT = 'EDIT';
+
 export const METHOD_POST = 'POST';
 export const METHOD_GET = 'GET';
 export const METHOD_PUT = 'PUT';

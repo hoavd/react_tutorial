@@ -5,7 +5,7 @@ import {autocomplete} from "../../../redux/action/Helper";
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 
-function CustomAsyncSelect({id, name, categoryCode, value, formik}) {
+function CustomAsyncSelect({id, name, categoryCode, value, formik, inputValue}) {
     const dispatch = useDispatch()
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -46,12 +46,13 @@ function CustomAsyncSelect({id, name, categoryCode, value, formik}) {
             debounceTimeout={300}
             value={value}
             loadOptions={loadOptions}
+            inputValue={inputValue}
             onChange={selectedOption =>
                 formik.setFieldValue(categoryCode, selectedOption.value)
             }
             styles={{
                 // Fixes the overlapping problem of the component
-                menu: provided => ({ ...provided, zIndex: 9999 })
+                menu: provided => ({...provided, zIndex: 9999})
             }}
             additional={{
                 page: 1,

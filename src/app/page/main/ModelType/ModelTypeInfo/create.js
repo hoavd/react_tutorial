@@ -1,17 +1,15 @@
-import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
+import {Container} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import {useFormik} from "formik";
+import {useParams} from "react-router-dom";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
-import {createModelTypeInfo, getListModelTypeParam, getModelTypeInfo} from "../../../../redux/action/ModelTypeInfo";
+import {getListModelTypeParam} from "../../../../redux/action/ModelTypeInfo";
 import FormModelTypeInfo from "./component/form";
-
+import * as Constants from "../../../../constants";
 
 function CreateModelTypeInfo() {
     const [params, setParams] = useState([]);
     const [columnsDynamic, setColumnsDynamic] = useState({});
-    const navigate = useNavigate();
     const dispatch = useDispatch()
     const {modelTypeId} = useParams();
 
@@ -39,7 +37,8 @@ function CreateModelTypeInfo() {
     return (
         <>
             <Container maxWidth="xl">
-                <FormModelTypeInfo modelTypeId={modelTypeId} params={params} columnsDynamic={columnsDynamic}/>
+                <FormModelTypeInfo mode={Constants.FORM_MODE_CREATE} modelTypeId={modelTypeId} params={params}
+                                   columnsDynamic={columnsDynamic}/>
             </Container>
         </>
     );

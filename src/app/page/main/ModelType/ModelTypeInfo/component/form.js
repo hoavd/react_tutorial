@@ -1,18 +1,18 @@
-import {Button, Grid, TextField, Container, FormControlLabel, Switch, Autocomplete} from "@mui/material";
-import React, {memo, useEffect, useState} from "react";
+import {Button, Grid, TextField, Container, FormControlLabel, Switch} from "@mui/material";
+import React, {memo} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {createModelTypeInfo} from "../../../../../redux/action/ModelTypeInfo";
+import {createModelTypeInfo, editModelTypeInfo} from "../../../../../redux/action/ModelTypeInfo";
 import {toast} from "react-toastify";
 import {useFormik} from "formik";
 import DynamicField from "../../../../../component/field/DynamicField";
 import {findListModelType} from "../../../../../redux/action/ModelType";
 import CustomSelect from "../../../../../component/field/CustomPageSelect/CustomSelect";
+import {FORM_MODE_CREATE} from "../../../../../constants";
 
-function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
+function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, mode}) {
     const navigate = useNavigate();
-    const dispatch = useDispatch()
-
+    const dispatch = useDispatch();
 
     const loadOptions = async (search, loadedOptions, {page}) => {
         const offset = 5 * (page - 1)
@@ -39,12 +39,14 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
     }
 
     const handleSubmitForm = async (values) => {
-        await dispatch(createModelTypeInfo(values)).then(resp => {
+        await dispatch(mode === FORM_MODE_CREATE ?
+            createModelTypeInfo(values) :
+            editModelTypeInfo(modelTypeInfo.id, values)).then(resp => {
             if (resp.payload.data.success) {
                 toast.success(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT
                 });
-                navigate("/modelType");
+                navigate(`/modelType/${modelTypeId}/modelTypeInfo`);
             } else {
                 toast.error(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT
@@ -59,14 +61,16 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
     }
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            modelType: {id: modelTypeId},
+            modelType: modelTypeInfo ? {id: modelTypeInfo?.modelTypeId?.id} : {id: modelTypeId},
             code: '',
             name: '',
             description: '',
             sortOrder: 0,
             status: true,
-            ...columnsDynamic
+            ...columnsDynamic,
+            ...modelTypeInfo
         },
         initialErrors: false,
         validate: (values) => {
@@ -81,7 +85,9 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
         onSubmit: handleSubmitForm
     });
 
-    console.log(formik.values)
+    // console.log(formik.values)
+    // console.log(modelTypeId)
+    // console.log(modelTypeInfo?.modelTypeId)
 
     return (
         <>
@@ -93,6 +99,7 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
                             <CustomSelect id="modelType"
                                           disabled={true}
                                           name="modelType"
+                                          inputValue={modelTypeInfo ? modelTypeInfo?.modelType?.name : ''}
                                           onChange={selectedOption =>
                                               formik.setFieldValue('modelType', selectedOption.value)}
                                           loadOptions={loadOptions}/>
@@ -141,6 +148,7 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
                                     <Grid key={index} item xs={3}>
                                         <DynamicField key={index} id={params[index].code} formik={formik}
                                                       name={params[index].code}
+                                                      inputValue={modelTypeInfo ? modelTypeInfo[params[index].code] : ''}
                                                       label={params[index].componentLabel}
                                                       style={{width: "100%", margin: "10px"}}
                                                       type={params[index].component.componentType.code}
@@ -153,6 +161,7 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic}) {
                                         <Grid key={index + 1} item xs={3}>
                                             <DynamicField key={index + 1} id={params[index + 1].code} formik={formik}
                                                           name={params[index + 1].code}
+                                                          inputValue={modelTypeInfo ? modelTypeInfo[params[index + 1].code] : ''}
                                                           label={params[index + 1].componentLabel}
                                                           style={{width: "100%", margin: "10px"}}
                                                           type={params[index + 1].component.componentType.code}
