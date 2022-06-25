@@ -8,7 +8,7 @@ import {useFormik} from "formik";
 import DynamicField from "../../../../../component/field/DynamicField";
 import {findListModelType} from "../../../../../redux/action/ModelType";
 import CustomSelect from "../../../../../component/field/CustomPageSelect/CustomSelect";
-import {FORM_MODE_CREATE} from "../../../../../constants";
+import {FORM_MODE_CREATE, FORM_MODE_EDIT} from "../../../../../constants";
 
 function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, mode}) {
     const navigate = useNavigate();
@@ -19,12 +19,10 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
         let hasMore = false
         let data = []
         let total = 0
-        await dispatch(findListModelType(5, offset, '', search, '')).then(resp => {
-            let response = resp.payload.data.modelTypeList
-            response.map((d) => {
-                data.push({value: {id: d.id}, label: `${d.name}`})
-            })
-            total = resp.payload.data.modelTypeTotal
+        console.log(search)
+        await dispatch(findListModelType(5, offset, '', search, '')).then(response => {
+            data = response.payload.data.modelTypeList
+            total = response.payload.data.modelTypeTotal
             if (total > offset * page + 5) {
                 hasMore = true
             }
@@ -85,120 +83,124 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
         onSubmit: handleSubmitForm
     });
 
-    // console.log(formik.values)
-    // console.log(modelTypeId)
-    // console.log(modelTypeInfo?.modelTypeId)
+    console.log(formik.values)
 
-    return (
-        <>
-            <Container maxWidth="xl">
-                <form style={{width: "100%"}} onSubmit={formik.handleSubmit}>
-                    <Grid container spacing={0.5}>
-                        <Grid item xs={1}/>
-                        <Grid item xs={3}>
-                            <CustomSelect id="modelType"
-                                          disabled={true}
-                                          name="modelType"
-                                          inputValue={modelTypeInfo ? modelTypeInfo?.modelType?.name : ''}
-                                          onChange={selectedOption =>
-                                              formik.setFieldValue('modelType', selectedOption.value)}
-                                          loadOptions={loadOptions}/>
+    if (mode === FORM_MODE_CREATE || (mode === FORM_MODE_EDIT && modelTypeInfo)) {
+        return (
+            <>
+                <Container maxWidth="xl">
+                    <form style={{width: "100%"}} onSubmit={formik.handleSubmit}>
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={1}/>
+                            <Grid item xs={3}>
+                                <CustomSelect id="modelType"
+                                              disabled={true}
+                                              name="modelType"
+                                              value={formik.values.modelType}
+                                              onChange={selectedOption =>
+                                                  formik.setFieldValue('modelType', selectedOption)}
+                                              loadOptions={loadOptions}/>
 
+                            </Grid>
+                            <Grid item xs={3}>
+
+                            </Grid>
                         </Grid>
-                        <Grid item xs={3}>
 
-                        </Grid>
-                    </Grid>
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={1}/>
+                            <Grid item xs={3}>
+                                <TextField id="code" name="code" type="text" label="Mã"
+                                           style={{width: "100%", margin: "10px"}}
+                                           onChange={formik.handleChange} value={formik.values.code}
+                                />
 
-                    <Grid container spacing={0.5}>
-                        <Grid item xs={1}/>
-                        <Grid item xs={3}>
-                            <TextField id="code" name="code" type="text" label="Mã"
-                                       style={{width: "100%", margin: "10px"}}
-                                       onChange={formik.handleChange} value={formik.values.code}
-                            />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField id="name" label="Tên" style={{width: "100%", margin: "10px"}}
+                                           onChange={formik.handleChange} value={formik.values.name}/>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={1}/>
+                            <Grid item xs={3}>
+                                <TextField id="description" label="Mô tả" style={{width: "100%", margin: "10px"}}
+                                           onChange={formik.handleChange} value={formik.values.description}/>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <FormControlLabel style={{width: "100%", margin: "10px"}} label="Hiệu lực"
+                                                  control={
+                                                      <Switch checked={formik.values.status}
+                                                              onChange={formik.handleChange}
+                                                              name="status"/>
+                                                  }
+                                />
+                            </Grid>
+                        </Grid>
 
-                        </Grid>
-                        <Grid item xs={3}>
-                            <TextField id="name" label="Tên" style={{width: "100%", margin: "10px"}}
-                                       onChange={formik.handleChange} value={formik.values.name}/>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={0.5}>
-                        <Grid item xs={1}/>
-                        <Grid item xs={3}>
-                            <TextField id="description" label="Mô tả" style={{width: "100%", margin: "10px"}}
-                                       onChange={formik.handleChange} value={formik.values.description}/>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <FormControlLabel style={{width: "100%", margin: "10px"}} label="Hiệu lực"
-                                              control={
-                                                  <Switch checked={formik.values.status}
-                                                          onChange={formik.handleChange}
-                                                          name="status"/>
-                                              }
-                            />
-                        </Grid>
-                    </Grid>
-
-                    {
-                        params?.map((param, index) => {
-                            if (index % 2 === 0) {
-                                let field1 =
-                                    <Grid key={index} item xs={3}>
-                                        <DynamicField key={index} id={params[index].code} formik={formik}
-                                                      name={params[index].code}
-                                                      inputValue={modelTypeInfo ? modelTypeInfo[params[index].code] : ''}
-                                                      label={params[index].componentLabel}
-                                                      style={{width: "100%", margin: "10px"}}
-                                                      type={params[index].component.componentType.code}
-                                                      component={params[index].component}/>
-                                    </Grid>
-
-                                let field2
-                                if (index + 1 < params.length) {
-                                    field2 =
-                                        <Grid key={index + 1} item xs={3}>
-                                            <DynamicField key={index + 1} id={params[index + 1].code} formik={formik}
-                                                          name={params[index + 1].code}
-                                                          inputValue={modelTypeInfo ? modelTypeInfo[params[index + 1].code] : ''}
-                                                          label={params[index + 1].componentLabel}
+                        {
+                            params?.map((param, index) => {
+                                if (index % 2 === 0) {
+                                    let field1 =
+                                        <Grid key={index} item xs={3}>
+                                            <DynamicField key={index} id={params[index].code} formik={formik}
+                                                          name={params[index].code}
+                                                          label={params[index].componentLabel}
                                                           style={{width: "100%", margin: "10px"}}
-                                                          type={params[index + 1].component.componentType.code}
-                                                          component={params[index + 1].component}/>
+                                                          value={formik.values[params[index].code] ?? ''}
+                                                          type={params[index].component.componentType.code}
+                                                          component={params[index].component}/>
                                         </Grid>
-                                } else {
-                                    field2 = <Grid item xs={3}/>
+
+                                    let field2
+                                    if (index + 1 < params.length) {
+                                        field2 =
+                                            <Grid key={index + 1} item xs={3}>
+                                                <DynamicField key={params[index].id}
+                                                              formik={formik}
+                                                              name={params[index + 1].code}
+                                                              inputValue={modelTypeInfo ? modelTypeInfo[params[index + 1].code] : ''}
+                                                              label={params[index + 1].componentLabel}
+                                                              style={{width: "100%", margin: "10px"}}
+                                                              value={formik.values[params[index].code] ?? ''}
+                                                              component={params[index + 1].component}/>
+                                            </Grid>
+                                    } else {
+                                        field2 = <Grid item xs={3}/>
+                                    }
+
+                                    return <Grid key={index} container spacing={0.5}>
+                                        <Grid item xs={1}/>
+                                        {field1}
+                                        {field2}
+                                    </Grid>
                                 }
+                            })
+                        }
 
-                                return <Grid key={index} container spacing={0.5}>
-                                    <Grid item xs={1}/>
-                                    {field1}
-                                    {field2}
-                                </Grid>
-                            }
-                        })
-                    }
-
-                    <Grid container spacing={0.5}>
-                        <Grid item xs={1}/>
-                        <Grid item xs={6} style={{display: "flex", justifyContent: "center"}}>
-                            <Button type="submit" variant="contained"
-                                    disabled={formik.isSubmitting || !formik.isValid}>
-                                Lưu thông tin
-                            </Button>
-                            <Button type="button" variant="contained" style={{marginLeft: "10px"}} color="error"
-                                    onClick={() => {
-                                        navigate(-1)
-                                    }}>
-                                Quay lại
-                            </Button>
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={1}/>
+                            <Grid item xs={6} style={{display: "flex", justifyContent: "center"}}>
+                                <Button type="submit" variant="contained"
+                                        disabled={formik.isSubmitting || !formik.isValid}>
+                                    Lưu thông tin
+                                </Button>
+                                <Button type="button" variant="contained" style={{marginLeft: "10px"}} color="error"
+                                        onClick={() => {
+                                            navigate(-1)
+                                        }}>
+                                    Quay lại
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </form>
-            </Container>
-        </>
-    );
+                    </form>
+                </Container>
+            </>
+        );
+    } else {
+        return <></>
+    }
+
 }
 
 export default memo(FormModelTypeInfo);

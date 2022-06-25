@@ -1,26 +1,24 @@
 import {TextField} from "@mui/material";
 import React, {memo} from "react";
-import CustomAsyncSelect from "./CustomPageSelect/CustomAsyncSelect";
+import AutocompleSelect from "./CustomPageSelect/AutocompleSelect";
 
-function DynamicField({id, name, label, style, value, type, component, formik, inputValue}) {
+function DynamicField({name, label, style, value, component, formik, inputValue}) {
     // console.log(inputValue)
     // console.log(component)
-    if (type === "TEXT") {
+    if (component.componentType.code === "TEXT") {
         return (
-            <TextField id={id} name={name} label={label} style={style}
+            <TextField id={name} name={name} label={label} style={style}
                        onChange={formik.handleChange} value={formik.values[name] || ''}/>
         );
         // value ?? inputValue
-    } else if (type === "COMBOBOX") {
+    } else if (component.componentType.code === "COMBOBOX") {
         return (
-            <CustomAsyncSelect id={id}
-                               name={name}
-                               style={style}
-                               value={value}
-                               categoryCode={component.category.code}
-                               formik={formik}
-                               inputValue={inputValue?.name}
-                               label={label}/>
+            <AutocompleSelect name={name}
+                              value={value}
+                              categoryCode={component.category.code}
+                              onChange={selectedOption =>
+                                   formik.setFieldValue(`${component.category.code}`, selectedOption)}
+                              label={label}/>
         );
     } else {
         return <></>

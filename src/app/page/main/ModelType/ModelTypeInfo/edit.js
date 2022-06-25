@@ -11,7 +11,7 @@ import * as Constants from "../../../../constants";
 function EditModelTypeInfo() {
     const [params, setParams] = useState([]);
     const [columnsDynamic, setColumnsDynamic] = useState({});
-    const [modelTypeInfo, setModelTypeInfo] = useState({});
+    const [modelTypeInfo, setModelTypeInfo] = useState('');
     const dispatch = useDispatch()
     const {id} = useParams();
 
@@ -48,18 +48,25 @@ function EditModelTypeInfo() {
         await loadModelTypeParam()
         await getInfo()
     }, []);
-    console.log(id)
-    return (
-        <>
-            <Container maxWidth="xl">
-                <FormModelTypeInfo id={id}
-                                   params={params}
-                                   mode={Constants.FORM_MODE_EDIT}
-                                   modelTypeInfo={modelTypeInfo}
-                                   columnsDynamic={columnsDynamic}/>
-            </Container>
-        </>
-    );
+
+    if (modelTypeInfo) {
+        return (
+            <>
+                <Container maxWidth="xl">
+                    <FormModelTypeInfo id={id}
+                                       params={params}
+                                       mode={Constants.FORM_MODE_EDIT}
+                                       modelTypeInfo={modelTypeInfo}
+                                       columnsDynamic={columnsDynamic}/>
+                </Container>
+            </>
+        )
+    } else {
+        return (
+            <></>
+        )
+
+    }
 }
 
 export default EditModelTypeInfo;
