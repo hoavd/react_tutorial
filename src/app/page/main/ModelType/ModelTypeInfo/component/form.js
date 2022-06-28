@@ -44,7 +44,7 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
                 toast.success(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT
                 });
-                navigate(`/modelType/${modelTypeId}/modelTypeInfo`);
+                navigate(`/modelType/${modelTypeId ?? modelTypeInfo?.modelType?.id}/modelTypeInfo`);
             } else {
                 toast.error(resp.payload.data.msg, {
                     position: toast.POSITION.TOP_RIGHT
@@ -61,7 +61,7 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            modelType: modelTypeInfo ? {id: modelTypeInfo?.modelTypeId?.id} : {id: modelTypeId},
+            modelType: modelTypeInfo ? {id: modelTypeInfo?.modelType?.id} : {id: modelTypeId},
             code: '',
             name: '',
             description: '',
@@ -93,8 +93,7 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
                         <Grid container spacing={0.5}>
                             <Grid item xs={1}/>
                             <Grid item xs={3}>
-                                <CustomSelect id="modelType"
-                                              disabled={true}
+                                <CustomSelect disabled={mode === FORM_MODE_CREATE}
                                               name="modelType"
                                               value={formik.values.modelType}
                                               onChange={selectedOption =>
@@ -143,12 +142,12 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
                                 if (index % 2 === 0) {
                                     let field1 =
                                         <Grid key={index} item xs={3}>
-                                            <DynamicField key={index} id={params[index].code} formik={formik}
+                                            <DynamicField key={params[index].id}
+                                                          formik={formik}
                                                           name={params[index].code}
                                                           label={params[index].componentLabel}
                                                           style={{width: "100%", margin: "10px"}}
                                                           value={formik.values[params[index].code] ?? ''}
-                                                          type={params[index].component.componentType.code}
                                                           component={params[index].component}/>
                                         </Grid>
 
@@ -156,13 +155,12 @@ function FormModelTypeInfo({modelTypeId, params, columnsDynamic, modelTypeInfo, 
                                     if (index + 1 < params.length) {
                                         field2 =
                                             <Grid key={index + 1} item xs={3}>
-                                                <DynamicField key={params[index].id}
+                                                <DynamicField key={params[index + 1].id}
                                                               formik={formik}
                                                               name={params[index + 1].code}
-                                                              inputValue={modelTypeInfo ? modelTypeInfo[params[index + 1].code] : ''}
                                                               label={params[index + 1].componentLabel}
                                                               style={{width: "100%", margin: "10px"}}
-                                                              value={formik.values[params[index].code] ?? ''}
+                                                              value={formik.values[params[index + 1].code] ?? ''}
                                                               component={params[index + 1].component}/>
                                             </Grid>
                                     } else {

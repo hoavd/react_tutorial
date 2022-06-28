@@ -2,7 +2,7 @@ import {TextField} from "@mui/material";
 import React, {memo} from "react";
 import AutocompleSelect from "./CustomPageSelect/AutocompleSelect";
 
-function DynamicField({name, label, style, value, component, formik, inputValue}) {
+function DynamicField({name, label, style, value, component, formik}) {
     // console.log(inputValue)
     // console.log(component)
     if (component.componentType.code === "TEXT") {
